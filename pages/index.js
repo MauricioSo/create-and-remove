@@ -4,8 +4,8 @@ import styles from "./index.module.css";
 
 export default function Home() {
   const [animalInput, setAnimalInput] = useState("");
-  const [result, setResult] = useState();
-
+  const [imageUrls, setImageUrls] = useState([]); // State to store image URLs
+  console.log(animalInput)
   async function onSubmit(event) {
     event.preventDefault();
     try {
@@ -16,13 +16,14 @@ export default function Home() {
         },
         body: JSON.stringify({ animal: animalInput }),
       });
-
+     
       const data = await response.json();
+      console.log(data, response)
       if (response.status !== 200) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      setResult(data.result);
+      setImageUrls(data); // Set the image URLs received from the API
       setAnimalInput("");
     } catch(error) {
       // Consider implementing your own error handling logic here
@@ -47,11 +48,14 @@ export default function Home() {
             name="animal"
             placeholder="Enter an animal"
             value={animalInput}
+            
             onChange={(e) => setAnimalInput(e.target.value)}
           />
           <input type="submit" value="Generate names" />
         </form>
-        <div className={styles.result}>{result}</div>
+            
+            <img  src={imageUrls.result}  className={styles.generatedImage} />
+        
       </main>
     </div>
   );
