@@ -22,8 +22,8 @@ export default function Home() {
       if (response.status !== 200) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
-
-      setImageUrls(data); // Set the image URLs received from the API
+      
+      setImageUrls(data.result.nameImage); // Set the image URLs received from the API
       setAnimalInput("");
     } catch(error) {
       // Consider implementing your own error handling logic here
@@ -31,7 +31,13 @@ export default function Home() {
       alert(error.message);
     }
   }
-
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = imageUrls + '.png';
+    link.download = 'imagen_descargable.png';
+    link.click();
+  };
+console.log("esta es la imagen url", imageUrls)
   return (
     <div>
       <Head>
@@ -54,8 +60,8 @@ export default function Home() {
           <input type="submit" value="Generate names" />
         </form>
             
-            <img  src={imageUrls.result}  className={styles.generatedImage} />
-        
+            <img  src={imageUrls + ".png"}  className={styles.generatedImage} />
+            <button onClick={handleDownload}>Descargar Imagen</button>
       </main>
     </div>
   );
